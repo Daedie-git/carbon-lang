@@ -320,6 +320,11 @@ auto PerformCppOverloadResolution(
     case clang::OverloadingResult::OR_Success: {
       CARBON_CHECK(best_viable_fn->Function);
       CARBON_CHECK(!best_viable_fn->RewriteKind);
+
+      if (sema.DiagnoseUseOfOverloadedDecl(best_viable_fn->Function, loc)) {
+        return SemIR::ErrorInst::InstId;
+      }
+
       SemIR::ClangDeclSignatureId signature_id =
           ComputeClangDeclSignatureFromBestViableFunction(
               context, best_viable_fn, self_expr, arg_exprs);

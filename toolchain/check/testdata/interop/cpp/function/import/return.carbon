@@ -48,11 +48,16 @@ auto UndeducedReturn();
 ''';
 
 fn Call() {
-  // CHECK:STDERR:        ╭─┤ fail_return_undeduced_auto.carbon:[[@LINE+7]]:3
+  // CHECK:STDERR:        ╭─┤ fail_return_undeduced_auto.carbon:[[@LINE+12]]:3
+  // CHECK:STDERR:        │ auto UndeducedReturn();
+  // CHECK:STDERR:        ·      ┬
+  // CHECK:STDERR:        ·      ╰──┤ 'UndeducedReturn' declared here [CppInteropParseNote]
+  // CHECK:STDERR:        ┆
   // CHECK:STDERR: ->     │   Cpp.UndeducedReturn();
-  // CHECK:STDERR:        ·   ━━━━━━━━━━┳━━━━━━━━━━
-  // CHECK:STDERR:        ·             ┗━━┫ error: semantics TODO: `Unsupported: return type: auto`
-  // CHECK:STDERR:        ·                ┃        [SemanticsTodo]
+  // CHECK:STDERR:        ·   ┳
+  // CHECK:STDERR:        ·   ┗━━┫ error: function 'UndeducedReturn' with deduced return type cannot be used
+  // CHECK:STDERR:        ·      ┃        before it is defined
+  // CHECK:STDERR:        ·      ┃        [CppInteropParseError]
   // CHECK:STDERR:        ╰────
   // CHECK:STDERR:
   Cpp.UndeducedReturn();
