@@ -829,6 +829,10 @@ static auto FindClangOperator(Context& context, SemIR::LocId loc_id,
                           best_viable_fn->Function->getNameAsString()));
         return SemIR::ErrorInst::InstId;
       }
+      if (sema.DiagnoseUseOfOverloadedDecl(best_viable_fn->Function, loc)) {
+        return SemIR::ErrorInst::InstId;
+      }
+
       sema.MarkFunctionReferenced(loc, best_viable_fn->Function);
 
       // If this is an operator method, the first arg will be used as self.
